@@ -1,0 +1,26 @@
+{
+  "name": "flash-godot-exporter",
+  "version": "1.0.0",
+  "description": "Export Flash project to use them wuth godot-flash-module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-ts": "rm -rf ./out/tsc/* && npx tsc -b",
+    "build-closure": "node ./tools/compile.js",
+    "build": "npm run build-ts && npm run build-closure",
+    "install": "npm run build && node ./tools/install.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jszip": "^3.4.1",
+    "babel-preset-es3": "^1.0.1",
+    "google-closure-compiler": "^20210106.0.0",
+    "jszip": "^3.5.0",
+    "typescript": "^4.1.3",
+    "glob": "7.1.6"
+  },
+  "dependencies": {
+    "glob": "^7.1.6"
+  }
+}
