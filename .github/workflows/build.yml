@@ -41,8 +41,8 @@ jobs:
           use-cross: true
           command: build
           args: --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
-      - run: ls -lah zipfile/target/
-      - run: ls -lah zipfile/target/x86_64-pc-windows-gnu/release/
+      - name: Show content
+        run: find .
       - name: Upload library
         uses: actions/upload-artifact@v2
         with:
@@ -67,6 +67,8 @@ jobs:
         with:
           command: build
           args: --manifest-path=zipfile/Cargo.toml
+      - name: Show content
+        run: find .
       - name: Upload library
         uses: actions/upload-artifact@v2
         with:
