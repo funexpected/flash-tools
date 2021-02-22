@@ -1439,6 +1439,8 @@ interface FlashFL {
 
     toggleBreakpoint();
 
+    xmlPanelFromString(xml: string): any;
+
     //synchronizeDocumentWithHeadVersion();
     trace(message: any): void;
     

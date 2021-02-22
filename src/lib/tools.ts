@@ -1,12 +1,12 @@
 import * as path from "./path";
 
-function createSpritesheetExporter(width: number, height: number, limitSize=false):SpriteSheetExporter {
+function createSpritesheetExporter(width: number, height: number, padding: number=8):SpriteSheetExporter {
     let spg = new SpriteSheetExporter();
     spg.algorithm = "maxRects";
     spg.allowRotate = false;
     spg.allowTrimming = false;
     spg.borderPadding = 2;
-    spg.shapePadding = 4;
+    spg.shapePadding = padding;
     spg.layoutFormat = "JSON";
     spg.autoSize = false;
     spg.sheetWidth = width;
@@ -31,13 +31,16 @@ class SpriteSheetGenerationAttempt {
     }
 }
 
-export function generateSpriteSheets(bitmaps: FlashBitmapItem[]){
+export function generateSpriteSheets(bitmaps: FlashBitmapItem[], padding: number = 8, maxPageSize: number = 4096){
     if (bitmaps.length == 0) return;
     normalizeLibrary(bitmaps);
     bitmaps = bitmaps.sort( (a, b) => b.hPixels * b.vPixels - a.hPixels * a.hPixels);
 
     let attempts: SpriteSheetGenerationAttempt[] = [];
     let sizes: number[] = [256, 512, 1024, 2048, 4096];
+    while (sizes.length > 1 && sizes[sizes.length-1] > maxPageSize) {
+        sizes.pop()
+    }
     while (sizes.length > 1) {
         let size = sizes[0];
         if (bitmaps.some(b => b.hPixels > size - 4 || b.vPixels > size - 4)) {
@@ -79,7 +82,7 @@ export function generateSpriteSheets(bitmaps: FlashBitmapItem[]){
                 }
                 if (!exporter) {
                     //fl.trace(`creating exporter ${maxWidth}x${maxHeight}`);
-                    exporter = createSpritesheetExporter(width, height, attempt.exporters.length > 0);
+                    exporter = createSpritesheetExporter(width, height, padding);
                     attempt.exporters.push(exporter);
                     exporter.addBitmap(bitmap);
                     //fl.trace("creating new exporter");
