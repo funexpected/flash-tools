@@ -15,8 +15,6 @@ jobs:
       - run: npm run build
   build-zip-file-win:
     runs-on: ubuntu-latest
-    env:
-      working-directory: zipfile
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -36,4 +34,4 @@ jobs:
         with:
           use-cross: true
           command: build
-          args: --target x86_64-pc-windows-gnu
+          args: --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
