@@ -13,9 +13,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm run build
-  build-zip-file-win:
+  build-zipfile-win:
     runs-on: ubuntu-latest
     steps:
+      - name: Install mingw
+        run: sudo apt-get install gcc-mingw-w64
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
@@ -28,10 +30,28 @@ jobs:
         with:
           toolchain: stable
           target: x86_64-pc-windows-gnu
-          override: true
-          
+          override: true  
       - uses: actions-rs/cargo@v1
         with:
           use-cross: true
           command: build
           args: --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
+  
+  build-zipfile-osx:
+    runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            zipfile/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --manifest-path=zipfile/Cargo.toml
