@@ -27,5 +27,5 @@ jobs:
           ~/.cargo/git
           zipfile/target
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - working-directory: zipfile
       - run: cargo build --release
+        working-directory: zipfile
