@@ -17,9 +17,9 @@ targetDirs.forEach(target => {
     fs.mkdirSync(toolsDir);
     
     fs.readdirSync(compiledDir).forEach(cmd => {
-        let destFileName = cmd.substr(0, cmd.length-3).split("_").map(p => p.capitalize()).join(" ") + ".jsfl";
-        console.log(`cp ${compiledDir}/${cmd} ${toolsDir}/${destFileName}`);
-        fs.copyFileSync(`${compiledDir}/${cmd}`, `${toolsDir}/${destFileName}`);
+        //let destFileName = cmd.substr(0, cmd.length-3).split("_").map(p => p.capitalize()).join(" ") + ".jsfl";
+        console.log(`cp ${compiledDir}/${cmd} ${toolsDir}/${cmd}`);
+        fs.copyFileSync(`${compiledDir}/${cmd}`, `${toolsDir}/${cmd}`);
     })
 })
 
