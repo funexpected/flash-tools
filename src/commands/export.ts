@@ -1,6 +1,6 @@
 import * as path from "../lib/path";
 import { Rasterizer } from "../lib/rasterizer";
-import { normalizeLibrary, cleanUpProject, createSpritesheet } from "../lib/tools";
+import { cleanUpProject, generateSpriteSheets } from "../lib/tools";
 
 fl.outputPanel.clear();
 fl.showIdleMessage(false);
@@ -25,8 +25,7 @@ fl.openDocument(exportProjectPathUri);
 let doc = fl.getDocumentDOM();
 let rasterizer = new Rasterizer();
 let bitmaps = rasterizer.rasterize("document");
-normalizeLibrary(bitmaps);
-createSpritesheet(bitmaps);
+generateSpriteSheets(bitmaps);
 
 fl.saveDocument(doc);
 fl.closeDocument(doc);
