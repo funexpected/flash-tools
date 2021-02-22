@@ -104,10 +104,10 @@ jobs:
       - name: Move commands to archive
         run: mv commands/* funexpected-tools/Commands/
       
-        - name: Compress release
+      - name: Compress release
         run: zip -r funexpected-tools funexpected-tools
       
-        - name: Create Release
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
