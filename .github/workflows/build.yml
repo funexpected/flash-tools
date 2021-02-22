@@ -35,19 +35,18 @@ jobs:
         with:
           toolchain: stable
           target: x86_64-pc-windows-gnu
-          override: true  
       - uses: actions-rs/cargo@v1
         with:
           use-cross: true
           command: build
-          args: --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
+          args: --release --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
       - name: Show content
         run: find .
       - name: Upload library
         uses: actions/upload-artifact@v2
         with:
           name: zipfile.dll
-          path: zipfile/target/x86_64-pc-windows-gnu/release/libzipfile.dll
+          path: zipfile/target/x86_64-pc-windows-gnu/release/zipfile.dll
   
   build-zipfile-osx:
     runs-on: macos-10.15
@@ -66,7 +65,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --manifest-path=zipfile/Cargo.toml
+          args: --release --manifest-path=zipfile/Cargo.toml
       - name: Show content
         run: find .
       - name: Upload library
