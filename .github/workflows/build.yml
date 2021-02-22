@@ -13,6 +13,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm run build
+      - name: Upload node files
+        uses: actions/upload-artifact@v2
+        with:
+          name: tools
+          path: out/compiled/*
   build-zipfile-win:
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +41,13 @@ jobs:
           use-cross: true
           command: build
           args: --target x86_64-pc-windows-gnu --manifest-path=zipfile/Cargo.toml
+      - run: ls -lah zipfile/target/
+      - run: ls -lah zipfile/target/x86_64-pc-windows-gnu/release/
+      - name: Upload library
+        uses: actions/upload-artifact@v2
+        with:
+          name: zipfile.dll
+          path: zipfile/target/x86_64-pc-windows-gnu/release/libzipfile.dll
   
   build-zipfile-osx:
     runs-on: macos-10.15
@@ -55,3 +67,26 @@ jobs:
         with:
           command: build
           args: --manifest-path=zipfile/Cargo.toml
+      - name: Upload library
+        uses: actions/upload-artifact@v2
+        with:
+          name: zipfile.dylib
+          path: zipfile/target/release/libzipfile.dylib
+  archive:
+    runs-on: ubuntu-latest
+    needs: [build-node, build-zipfile-win, build-zipfile-osx]
+    steps:
+      - name: Download compiled js
+        uses: actions/download-artifact@v2
+        with:
+          name: tools
+      - name: Download zipfile.dll
+        uses: actions/download-artifact@v2
+        with:
+          name: zipfile.dll
+      - name: Download zipfile.dylib
+        uses: actions/download-artifact@v2
+        with:
+          name: zipfile.dylib
+      - name: Show contents
+        run: find .
