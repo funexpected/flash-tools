@@ -128,8 +128,4 @@ jobs:
           asset_path: ./funexpected-tools.zip
           asset_name: funexpected-tools.zip
           asset_content_type: application/zip
-
-
-      - name: Show contents
-        run: find .
       
