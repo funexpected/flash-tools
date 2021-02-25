@@ -170,6 +170,6 @@ export function invoke(command: string, args:{ [id: string] : string; } = { }) {
     for (let arg in args) {
         cmd += ` --${arg} "${args[arg]}"`;
     }
-    fl.trace("execiting " + cmd);
+    //fl.trace("executing " + cmd);
     FLfile.runCommandLine(cmd);
 }
