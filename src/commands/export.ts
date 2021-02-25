@@ -1,7 +1,7 @@
 import * as path from "../lib/path";
 import { Rasterizer } from "../lib/rasterizer";
 import { ExportSettingsDialog } from "../lib/dialogs/export_settings"
-import { cleanUpProject, generateSpriteSheets } from "../lib/tools";
+import { cleanUpProject, generateSpriteSheets, invoke } from "../lib/tools";
 
 let dialog = new ExportSettingsDialog();
 let settings = dialog.prompt();
@@ -39,15 +39,13 @@ if (settings) {
 
     // cleanup exported project
     cleanUpProject(exportProjectDir);
-    try {
-        ZipFile.compress(exportProjectDir, exportProjectArchive);
-        alert("Document exported to " + exportProjectArchive);
-    } catch {
-        alert("Document exported to " + exportProjectDir);
-        fl.trace(
-            `ZipFile library not found, project not archived. ` +
-            `To use exported project in Godot you need to compress ${exportProjectDir} ` +
-            `using Zip and rename to ${exportProjectArchive}`
-        );
+    for (let p in FLfile) {
+        fl.trace("FLfile." + p);
     }
+
+    invoke("compress", {
+        source: exportProjectDir,
+        destination: exportProjectArchive
+    });
+    alert("Document exported to " + exportProjectArchive);
 }

@@ -579,6 +579,7 @@ interface FlashFLfile {
     setAttributes(fileURI: string, strAttrs: string): boolean;
     uriToPlatformPath(fileURI: string): string;
     write(fileURI: string, textToWrite: string, strAppendMode?: string): boolean;
+    runCommandLine(command: string): object;
 }
 
 interface FlashSoundItem {
