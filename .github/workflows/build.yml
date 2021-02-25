@@ -85,7 +85,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: tools
-          path: commands
+          path: funexpected-tools/Funexpected Tools
       - name: Download toolkit.win
         uses: actions/download-artifact@v2
         with:
