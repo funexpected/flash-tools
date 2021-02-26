@@ -62,10 +62,6 @@ if (settings) {
 
     // cleanup exported project
     cleanUpProject(exportProjectDir);
-    for (let p in FLfile) {
-        fl.trace("FLfile." + p);
-    }
-
     invoke("compress", {
         source: exportProjectDir,
         destination: exportProjectArchive
