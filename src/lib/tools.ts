@@ -186,7 +186,7 @@ export function cleanUpProject(path: String) {
 export function invoke(command: string, args:{ [id: string] : string; } = { }) {
     let isOSX = (fl.version.indexOf("MAC") != -1);
     let doc = fl.getDocumentDOM();
-    let toolkitPath = `${fl.configDirectory}Commands/Funexpected/toolkit`;
+    let toolkitPath = `${fl.configDirectory}Commands/Funexpected Tools/toolkit`;
     if (!isOSX) toolkitPath += ".exe";
     let cmd = `"${toolkitPath}" ${command}`;
     for (let arg in args) {
