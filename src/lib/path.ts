@@ -23,8 +23,10 @@
 
 
 export function normalize(path: string): string {
-    path = path.replace("\\", "/");
-    while (path.search("//") >= 0) {
+    while (path.indexOf("\\") >= 0) {
+        path = path.replace("\\", "/");
+    }
+    while (path.indexOf("//") >= 0) {
         path = path.replace("//", "/");
     }
     while (path.endsWith("/")) {
