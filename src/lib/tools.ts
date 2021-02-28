@@ -101,7 +101,7 @@ export function generateSpriteSheets(bitmaps: FlashBitmapItem[], padding: number
     }
 
     let exporters = attempts.sort( (a, b) => a.getSquare() - b.getSquare())[0].exporters;
-    let baseUri =  "file://" + path.base(fl.getDocumentDOM().path);
+    let baseUri =  FLfile.platformPathToURI(path.base(fl.getDocumentDOM().path));
     let idx = 0;
     let exportedSpriteSheets = "";
     //fl.trace(`created ${exporters.length} spritesheets`);
@@ -126,7 +126,7 @@ export function generateSpriteSheets(bitmaps: FlashBitmapItem[], padding: number
 // to rename and move bitmaps to own folder
 function normalizeLibrary(bitmaps: FlashBitmapItem[]) {
     let lib = fl.getDocumentDOM().library;
-    let basePath = `file://${path.base(fl.getDocumentDOM().path)}/LIBRARY`;
+    let basePath = FLfile.platformPathToURI(`${path.base(fl.getDocumentDOM().path)}/LIBRARY`);
     let idx = 0;
     lib.newFolder("gdexp");
     for (let bitmap of bitmaps) {

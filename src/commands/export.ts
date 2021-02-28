@@ -36,14 +36,15 @@ if (settings) {
     fl.showIdleMessage(false);
         
     let originalDoc = fl.getDocumentDOM();
-    let originalUri = "file://" + originalDoc.path;
+    let originalUri = FLfile.platformPathToURI(originalDoc.path);
     originalDoc.save(false);
     
     let exportProjectArchive = settings.exportPath;
     let exportProjectDir = path.getProjectPrefix() + ".fnx.export/";
     let exportProjectPath = exportProjectDir + path.file(exportProjectDir) + ".xfl";
-    let exportProjectDirUri = "file://" + exportProjectDir;
-    let exportProjectPathUri = "file://" + exportProjectPath;
+    let exportProjectDirUri = FLfile.platformPathToURI(exportProjectDir);
+    let exportProjectPathUri = FLfile.platformPathToURI(exportProjectPath);
+    fl.trace("Export Project URI: " + exportProjectPathUri);
     if (FLfile.exists(exportProjectDirUri)) FLfile.remove(exportProjectDirUri);
     FLfile.createFolder(exportProjectDirUri);
     fl.trace("Exporting project");
