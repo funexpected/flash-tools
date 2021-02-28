@@ -14,7 +14,6 @@ Open Terminal application, paste this code, press `Enter`:
 ```
 <boot drive>\Users\username\AppData\Local\Adobe\Animate <version>\<language>\Configuration\Commands
 ```
-> :warning: **Not tested on windows**: we have no windows machine and unable to test if Flash Tools fully usable on windows. While most parts of commands should work fine, compressing output project may be missed. In this case you need to compress resulting `*.fnx.export` folder using zip tool and change extension to `.zfl`. Please, report any issues or positive feedback.
 
 ## Usage
 
@@ -38,6 +37,9 @@ While `Export` command do not change your project, `Rasterize Current Screen` ch
 
 ## Roadmap
 
+- [ ] add docs and tutorials
+- [ ] convert Canvas-based documents into legacy before exporting
+- [ ] add `About` and `Check For Updates` commands
 - [ ] add ability to automaticaly open exported project in godot for testing purposes
 - [ ] support Warp Tool
 - [ ] support sounds
