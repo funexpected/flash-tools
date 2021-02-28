@@ -63,6 +63,7 @@ fn main() {
     let opts: Opts = Opts::parse();
     match opts.subcmd {
         SubCommand::Compress(c) => {
+            println!("Compress `{:?}` `{:?}`", c.source, c.destination);
             let file = File::create(&c.destination).unwrap();
             let method = zip::CompressionMethod::Deflated;
             let walkdir = WalkDir::new(&c.source);
@@ -81,6 +82,7 @@ fn compress<T>(
 where
     T: Write + Seek,
 {
+    
     //return Result::Ok(());
     let mut zip = zip::ZipWriter::new(writer);
     let options = FileOptions::default()
@@ -90,6 +92,7 @@ where
     let mut buffer = Vec::new();
     for entry in it {
         let path = entry.path();
+        println!("entring path {:?}", path);
         let name = path.strip_prefix(Path::new(prefix)).unwrap();
 
         // Write file or directory explicitly
