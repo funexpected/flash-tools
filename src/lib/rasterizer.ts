@@ -55,7 +55,7 @@ export class Rasterizer {
             this.rasterizeItem(item.name);
         }
 
-        let baseUri = "file://" + path.base(fl.getDocumentDOM().path) + "/LIBRARY/";
+        let baseUri = FLfile.platformPathToURI(path.base(fl.getDocumentDOM().path) + "/LIBRARY/");
         let result: FlashBitmapItem[] = [];
         for (let item of fl.getDocumentDOM().library.items.filter(item => item.name in this.bitmapItems)) {
             let bitmap = item as FlashBitmapItem;

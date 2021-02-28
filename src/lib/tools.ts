@@ -101,7 +101,7 @@ export function generateSpriteSheets(bitmaps: FlashBitmapItem[], padding: number
     }
 
     let exporters = attempts.sort( (a, b) => a.getSquare() - b.getSquare())[0].exporters;
-    let baseUri =  "file://" + path.base(fl.getDocumentDOM().path);
+    let baseUri =  FLfile.platformPathToURI(path.base(fl.getDocumentDOM().path));
     let idx = 0;
     let exportedSpriteSheets = "";
     //fl.trace(`created ${exporters.length} spritesheets`);
@@ -126,7 +126,7 @@ export function generateSpriteSheets(bitmaps: FlashBitmapItem[], padding: number
 // to rename and move bitmaps to own folder
 function normalizeLibrary(bitmaps: FlashBitmapItem[]) {
     let lib = fl.getDocumentDOM().library;
-    let basePath = `file://${path.base(fl.getDocumentDOM().path)}/LIBRARY`;
+    let basePath = FLfile.platformPathToURI(`${path.base(fl.getDocumentDOM().path)}/LIBRARY`);
     let idx = 0;
     lib.newFolder("gdexp");
     for (let bitmap of bitmaps) {
@@ -163,8 +163,8 @@ function normalizeLibrary(bitmaps: FlashBitmapItem[]) {
 
 // removes bin folder & clears images from library (all required images are stored in atlases already)
 export function cleanUpProject(path: String) {
-    FLfile.remove(`file://${path}bin/`)
-    let rootUri = `file://${path}LIBRARY/`;
+    FLfile.remove(FLfile.platformPathToURI(`${path}bin/`))
+    let rootUri = FLfile.platformPathToURI(`${path}LIBRARY/`);
     let dirs = [""];
 
     while (dirs.length) {
@@ -185,13 +185,24 @@ export function cleanUpProject(path: String) {
 // invokes toolkig command
 export function invoke(command: string, args:{ [id: string] : string; } = { }) {
     let isOSX = (fl.version.indexOf("MAC") != -1);
-    let doc = fl.getDocumentDOM();
     let toolkitPath = `${fl.configDirectory}Commands/Funexpected Tools/toolkit`;
     if (!isOSX) toolkitPath += ".exe";
     let cmd = `"${toolkitPath}" ${command}`;
     for (let arg in args) {
         cmd += ` --${arg} "${args[arg]}"`;
     }
-    //fl.trace("executing " + cmd);
-    FLfile.runCommandLine(cmd);
+    if (isOSX) {
+        FLfile.runCommandLine(cmd);
+        return;
+    }
+
+    // there is smthing wrong with FLfile.runCommandLine
+    // see https://stackoverflow.com/questions/9116828/jsfl-flfile-runcommandline-properly-escaping-spaces-for-windows-commandline-a
+    let tmpBatDir = FLfile.platformPathToURI("c:/temp");
+    if (!FLfile.exists(tmpBatDir)) {
+        FLfile.createFolder(tmpBatDir)
+    }
+    let tmpBat = "c:/temp/fnxcmd.bat"
+    FLfile.write(FLfile.platformPathToURI(tmpBat), cmd);
+    FLfile.runCommandLine(tmpBat);
 }
