@@ -24,7 +24,7 @@
 import * as path from "../lib/path";
 import { Rasterizer } from "../lib/rasterizer";
 import { ExportSettingsDialog } from "../lib/dialogs/export_settings"
-import { cleanUpProject, generateSpriteSheets, invoke } from "../lib/tools";
+import { cleanUpProject, generateSpriteSheets, invoke, convertFromCanvas } from "../lib/tools";
 
 let dialog = new ExportSettingsDialog();
 let settings = dialog.prompt();
@@ -50,7 +50,13 @@ if (settings) {
     fl.trace("Exporting project");
     fl.trace("Worrrking with " + exportProjectPathUri);
     fl.saveDocument(originalDoc, exportProjectPathUri);
+    fl.saveDocument(originalDoc, originalUri);
+    
+    convertFromCanvas(exportProjectPath);
+    //convertFromCanvas(exportProjectPath);
+    //alert("Document has been converted from Canvas");
     fl.openDocument(exportProjectPathUri);
+    doc = fl.getDocumentDOM();
 
     let editedItem: "document"|FlashItem = editedItemName == "document" ? "document" : (doc.library.items.filter(i => i.name == editedItemName)[0] as FlashItem);
     let rasterizer = new Rasterizer();
@@ -58,8 +64,6 @@ if (settings) {
     generateSpriteSheets(bitmaps, settings.padding, settings.pageSize);
 
     fl.saveDocument(doc);
-    fl.closeDocument(doc);
-    fl.openDocument(originalUri);
 
     // cleanup exported project
     cleanUpProject(exportProjectDir);
@@ -67,5 +71,7 @@ if (settings) {
         source: exportProjectDir,
         destination: exportProjectArchive
     });
+    fl.closeDocument(doc, false);
+    fl.openDocument(originalUri);
     alert("Document exported to " + exportProjectArchive);
 }

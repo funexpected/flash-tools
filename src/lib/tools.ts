@@ -205,4 +205,16 @@ export function invoke(command: string, args:{ [id: string] : string; } = { }) {
     let tmpBat = "c:/temp/fnxcmd.bat"
     FLfile.write(FLfile.platformPathToURI(tmpBat), cmd);
     FLfile.runCommandLine(tmpBat);
+export function convertFromCanvas(projectPath: string) {
+    let docURI = FLfile.platformPathToURI(path.base(projectPath) + "/DOMDocument.xml");
+    if (!FLfile.exists(docURI)) {
+        return;
+    }
+    let docString = FLfile.read(docURI);
+    let docMatch = docString.match('filetypeGUID="(.+?)"');
+    if (!docMatch) {
+        return;
+    }
+    docString = docString.replace(docMatch[0]+'', 'filetypeGUID="DD0DDBBF-5BEF-45B2-9F24-A3048D2A676F"');
+    FLfile.write(docURI, docString);
 }
