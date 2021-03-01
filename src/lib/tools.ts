@@ -182,18 +182,36 @@ export function cleanUpProject(path: String) {
     }
 }
 
+function handleInfocation(command: string): object {
+    let invokeOutput = FLfile.platformPathToURI(`${fl.configDirectory}Commands/Funexpected Tools/result.json`);
+    if (!FLfile.exists(invokeOutput)) {
+        fl.trace(`Error invocating ${command}: unable to execute native toolkit.`);
+        throw(`Error invocating ${command}: unable to execute native toolkit.`);
+    }
+    let invokeResult = eval(`(${FLfile.read(invokeOutput)})`);
+    if (invokeResult.success) {
+        FLfile.remove(invokeOutput);
+        return invokeResult.result;
+    } else {
+        fl.trace(`Error invocating ${command}: ${invokeResult.message}`);
+        throw(`Error invocating ${command}: ${invokeResult.message}`);
+    }
+}
+
 // invokes toolkig command
-export function invoke(command: string, args:{ [id: string] : string; } = { }) {
+export function invoke(command: string, args:{ [id: string] : string; } = { }): object {
     let isOSX = (fl.version.indexOf("MAC") != -1);
     let toolkitPath = `${fl.configDirectory}Commands/Funexpected Tools/toolkit`;
     if (!isOSX) toolkitPath += ".exe";
     let cmd = `"${toolkitPath}" ${command}`;
     for (let arg in args) {
-        cmd += ` --${arg} "${args[arg]}"`;
+        let value = args[arg];
+        while (arg.indexOf("_") >= 0) arg = arg.replace("_", "-");
+        cmd += ` --${arg} "${value}"`;
     }
     if (isOSX) {
         FLfile.runCommandLine(cmd);
-        return;
+        return handleInfocation(command);
     }
 
     // there is smthing wrong with FLfile.runCommandLine
@@ -205,6 +223,9 @@ export function invoke(command: string, args:{ [id: string] : string; } = { }) {
     let tmpBat = "c:/temp/fnxcmd.bat"
     FLfile.write(FLfile.platformPathToURI(tmpBat), cmd);
     FLfile.runCommandLine(tmpBat);
+    return handleInfocation(command);
+}
+
 export function convertFromCanvas(projectPath: string) {
     let docURI = FLfile.platformPathToURI(path.base(projectPath) + "/DOMDocument.xml");
     if (!FLfile.exists(docURI)) {

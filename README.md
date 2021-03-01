@@ -39,7 +39,7 @@ While `Export` command do not change your project, `Rasterize Current Screen` ch
 
 - [ ] add docs and tutorials
 - [x] convert Canvas-based documents into legacy before exporting
-- [ ] add `About` and `Check For Updates` commands
+- [x] add `About` and `Check For Updates` commands
 - [ ] add ability to automaticaly open exported project in godot for testing purposes
 - [ ] support Warp Tool
 - [ ] support sounds
