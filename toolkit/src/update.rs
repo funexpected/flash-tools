@@ -36,7 +36,7 @@ pub struct Update {
 
 impl Update {
     pub fn execute(&self) -> Res<UpdateResult> {
-        let client = Github::new("399e795ad7b0a8d21b1b0667cc7bfe198517c902").unwrap();
+        let client = Github::new("bb6fd4eddf585aa78065a1730cd24a6612f60621").unwrap();
         let repo_owner = "funexpected";
         let repo_name = "flash-tools";
         //let repo_name = "godot";
