@@ -45,6 +45,8 @@ jobs:
           target: x86_64-pc-windows-gnu
       - uses: actions-rs/cargo@v1
         with:
+          env:
+            GITHUB_DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
           use-cross: true
           command: build
           args: --release --target x86_64-pc-windows-gnu --manifest-path=toolkit/Cargo.toml
@@ -72,6 +74,8 @@ jobs:
           toolchain: stable
       - uses: actions-rs/cargo@v1
         with:
+          env:
+            GITHUB_DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
           command: build
           args: --release --manifest-path=toolkit/Cargo.toml
       - name: Upload library
