@@ -10,7 +10,7 @@ String.prototype.capitalize = function() {
 
 let targetDirs = glob.sync(`${home}/Library/ApplicationSupport/Adobe/Animate*/*/Configuration/Commands/`);
 targetDirs.forEach(target => {
-    let toolsDir = `${target}/Funexpected`
+    let toolsDir = `${target}/Funexpected Tools`
     if (fs.existsSync(toolsDir)) {
         fs.rmdirSync(toolsDir, { recursive: true });
     }
