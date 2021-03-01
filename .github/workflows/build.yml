@@ -16,6 +16,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - run: |
+          export VERSION="${{ github.ref }}"
+          export VERSION="${VERSION:1}"
+          echo "export const STRING = \"$VERSION\"" > src/lib/version.ts
       - run: npm run build
       - name: Upload node files
         uses: actions/upload-artifact@v2
