@@ -68,6 +68,11 @@ impl Update {
                 std::fs::rename(fntools_dir.path(), &update_dir)?;
                 std::fs::remove_dir_all(extract_dir)?;
                 std::fs::remove_file(zip_path)?;
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::PermissionsExt;
+                    std::fs::set_permissions(&update_dir.join("toolkit"), std::fs::Permissions::from_mode(0o755)).unwrap();
+                }
                 return Ok(UpdateResult::create("updated", Some(&update_dir), Some(release.version())));
             } else {
                 return err("No `Funexpected Tools` folder found in update");

@@ -4,6 +4,8 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+env:
+  GITHUB_DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
 jobs:
   build-node:
     runs-on: ubuntu-latest
@@ -45,8 +47,6 @@ jobs:
           target: x86_64-pc-windows-gnu
       - uses: actions-rs/cargo@v1
         with:
-          env:
-            GITHUB_DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
           use-cross: true
           command: build
           args: --release --target x86_64-pc-windows-gnu --manifest-path=toolkit/Cargo.toml
@@ -74,8 +74,6 @@ jobs:
           toolchain: stable
       - uses: actions-rs/cargo@v1
         with:
-          env:
-            GITHUB_DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
           command: build
           args: --release --manifest-path=toolkit/Cargo.toml
       - name: Upload library
