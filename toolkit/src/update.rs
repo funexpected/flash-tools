@@ -23,7 +23,6 @@
 use crate::prelude::*;
 use crate::compress::decompress;
 
-use github_rs::client::{Executor, Github};
 use reqwest;
 
 /// Update to the latest version
@@ -36,19 +35,24 @@ pub struct Update {
 
 impl Update {
     pub fn execute(&self) -> Res<UpdateResult> {
-        let client = Github::new(env!("GITHUB_DEVELOPER_TOKEN")).unwrap();
-        let repo_owner = "funexpected";
-        let repo_name = "flash-tools";
-        //let repo_name = "godot";
-        let repo_enpoint = format!("repos/{}/{}/releases/latest", repo_owner, repo_name);
-        let (_headers, status, json) = client.get()
-            .custom_endpoint(&repo_enpoint)
-            .execute::<Value>()?;
-        
-        if status != 200 {
-            return err("No release found");
+        let release_url = "https://api.github.com/repos/funexpected/flash-tools/releases/latest";
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert("User-Agent", reqwest::header::HeaderValue::from_static("reqwest"));
+        let client = reqwest::blocking::Client::builder()
+            .default_headers(headers)
+            .build()?;
+
+        let response = client.get(release_url).send()?;
+        if response.status() != 200 {
+            return err(&format!("Can't fetch release (response code: {})", response.status()));
         }
-        let release: Release = serde_json::from_value(json.unwrap()).unwrap();
+        let release: Release = serde_json::from_str(&response.text()?)?;
+
+        
+        // if status != 200 {
+        //     return err("No release found");
+        // }
+        // let release: Release = serde_json::from_value(json.unwrap()).unwrap();
         if !release.is_version_higher(&self.from_version) {
             return Ok(UpdateResult::create("already_latest", None, None));
         }
