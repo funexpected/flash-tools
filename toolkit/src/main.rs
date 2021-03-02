@@ -23,18 +23,7 @@
 mod prelude;
 mod update;
 mod compress;
-
-
-//use clap::Clap;
-// use std::fs::File;
-// use std::path::Path;
-// use walkdir::{DirEntry, WalkDir};
-// use std::error::Error;
-
-// use github_rs::client::{Executor, Github};
-//use serde::{Deserialize, Serialize};
-//use serde_json::Value;
-// use reqwest;
+mod install;
 
 use crate::prelude::*;
 
@@ -51,19 +40,9 @@ struct Opts {
 enum SubCommand {
     Compress(compress::Compress),
     Update(update::Update),
+    Install(install::Install)
 }
 
-/// Copress target folder into destination path using zip
-// #[derive(Clap)]
-// struct Compress {
-//     /// Source folder
-//     #[clap(long, short)]
-//     source: String,
-//     /// Destination file
-//     #[clap(long, short)]
-//     destination: String,
-
-// }
 
 fn main() {
     let opts: Opts = Opts::parse();
@@ -78,6 +57,15 @@ fn main() {
             match cmd.execute() {
                 Ok(value) => success(serde_json::to_value(value).unwrap()),
                 Err(msg) => error(msg.to_string())
+            }
+        },
+        SubCommand::Install(cmd) => {
+            match cmd.execute() {
+                Ok(value) => println!("Funexpected Tools succefully installed."),
+                Err(msg) => {
+                    println!("Error installing Funexpected Tools: {:?}", msg);
+                    std::process::exit(1);
+                }
             }
         }
     }

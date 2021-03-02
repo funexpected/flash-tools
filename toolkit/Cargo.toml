@@ -13,3 +13,5 @@ walkdir = "2.3.1"
 serde = { version = "1.0.123", features = ["derive"] }
 serde_json = "1.0"
 reqwest = { version = "0.11.1", features = ["blocking"] }
+glob = "0.3.0"
+dirs = "3.0.1"
