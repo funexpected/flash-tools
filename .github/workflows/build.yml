@@ -17,8 +17,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: |
-          export VERSION="${{ github.ref }}"
-          export VERSION="${VERSION:1}"
+          export VERSION=$(echo "${{ github.ref }}" | sed "s|refs/tags/v||")
           echo "export const STRING = \"$VERSION\"" > src/lib/version.ts
       - run: npm run build
       - name: Upload node files
