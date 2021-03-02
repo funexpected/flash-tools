@@ -44,6 +44,12 @@ if (updateResult.status == 'already_latest') {
         let targetURI = FLfile.platformPathToURI(`${fl.configDirectory}Commands/Funexpected Tools/${file}`);
         FLfile.copy(`${updatedFolderURI}/${file}`, targetURI);
     }
+
+    let isOSX = (fl.version.indexOf("MAC") != -1);
+    if (isOSX) {
+        let toolkitPath = FLfile.platformPathToURI(`${fl.configDirectory}Commands/Funexpected Tools/toolkit`);
+        FLfile.runCommandLine(`chmod a+x "${toolkitPath}"`);
+    }
     FLfile.remove(updatedFolderURI);
     alert(`Funexpected Tools updated to ${updateResult.version}`);
 }
