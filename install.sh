@@ -25,6 +25,7 @@ cd $TMPDIR
 curl -# -L https://github.com/funexpected/flash-tools/releases/latest/download/funexpected-tools.zip -o funexpected-tools.zip
 unzip -qq funexpected-tools.zip
 cd funexpected-tools/
-chmod a+x "Funexpected Tools/invoke"
+chmod a+x "Funexpected Tools/toolkit"
 ls -d $HOME/Library/Application\ Support/Adobe/Animate*/*/Configuration/Commands/ | xargs -I{} cp -R ./* "{}"
+ls -d $HOME/Library/Application\ Support/Adobe/Animate*/*/Configuration/Commands/Funexpected\ Tools/toolkit | xargs -I{} chmod a+x "{}" 
 echo "Funexpected Flash Tools installed. Restart Adobe Animate and inspect 'Commands/Funexpected Tools' menu."
