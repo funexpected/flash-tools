@@ -85,6 +85,14 @@ export class Rasterizer {
                 let frame = layer.frames[frameIdx];
                 if (frameIdx != frame.startFrame) continue;
                 
+                if (frame.tweenType == "shape" && frame.duration > 1) {
+                    timeline.convertToKeyframes(frameIdx, frameIdx+frame.duration);
+                }
+
+                if (frame.tweenType == "shape") {
+                    frame.tweenType = "none";
+                }
+
                 let hasShapes = frame.elements.some(e => e.elementType == "shape");
 
                 while (hasShapes) {
